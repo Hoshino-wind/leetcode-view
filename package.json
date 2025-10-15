@@ -1,0 +1,46 @@
+{
+  "name": "leetcode-view",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "LeetCode热题100算法可视化教程",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "@types/cytoscape": "^3.21.9",
+    "@types/d3": "^7.4.3",
+    "anime": "^0.1.2",
+    "cytoscape": "^3.33.1",
+    "d3": "^7.9.0",
+    "framer-motion": "^10.16.0",
+    "gsap": "^3.13.0",
+    "lucide-react": "^0.294.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0",
+    "react-syntax-highlighter": "^15.6.6",
+    "vis-data": "^8.0.3",
+    "vis-network": "^10.0.2",
+    "zustand": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0"
+  }
+}
