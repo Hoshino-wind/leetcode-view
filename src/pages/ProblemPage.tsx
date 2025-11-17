@@ -1,9 +1,10 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, CheckCircle2, Heart, BookOpen } from "lucide-react";
 import { getProblemById, problems } from "@/data/problems";
 import { Difficulty } from "@/types";
 import { getVisualizer } from "@/problems";
 import SolutionSection from "@/components/SolutionSection";
+import { useAppStore } from "@/store/useAppStore";
 
 /**
  * 可视化组件渲染器
@@ -34,6 +35,20 @@ function ProblemPage() {
   const currentId = Number(id);
   const problem = getProblemById(currentId);
   
+  // 使用 Zustand store
+  const {
+    isCompleted,
+    isFavorite,
+    isInProgress,
+    markAsCompleted,
+    markAsInProgress,
+    toggleFavorite,
+  } = useAppStore();
+  
+  const completed = isCompleted(currentId);
+  const favorite = isFavorite(currentId);
+  const inProgress = isInProgress(currentId);
+  
   // 找到当前题目在列表中的索引
   const currentIndex = problems.findIndex(p => p.id === currentId);
   const hasPrevious = currentIndex > 0;
@@ -52,13 +67,16 @@ function ProblemPage() {
   };
   
   const handleComplete = () => {
-    // TODO: 实现学完逻辑，可以保存到 localStorage 或状态管理
-    alert('恭喜完成本题学习！');
+    markAsCompleted(currentId);
     if (hasNext) {
       handleNext();
     } else {
       navigate('/');
     }
+  };
+  
+  const handleStartLearning = () => {
+    markAsInProgress(currentId);
   };
 
   if (!problem) {
@@ -136,13 +154,47 @@ function ProblemPage() {
               <span>上一题</span>
             </button>
             
+            {/* 收藏按钮 */}
             <button
-              onClick={handleComplete}
-              className="inline-flex items-center gap-1 px-4 py-1.5 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition shadow-sm"
+              onClick={() => toggleFavorite(currentId)}
+              className={`inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium rounded-lg transition ${
+                favorite
+                  ? "bg-red-50 text-red-600 border border-red-200 hover:bg-red-100"
+                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+              }`}
+              title={favorite ? "取消收藏" : "收藏"}
             >
-              <CheckCircle2 size={16} />
-              <span>学完</span>
+              <Heart size={16} fill={favorite ? "currentColor" : "none"} />
             </button>
+            
+            {/* 开始学习/学完按钮 */}
+            {!completed ? (
+              <button
+                onClick={inProgress ? handleComplete : handleStartLearning}
+                className={`inline-flex items-center gap-1 px-4 py-1.5 text-sm font-medium rounded-lg transition shadow-sm ${
+                  inProgress
+                    ? "text-white bg-green-600 hover:bg-green-700"
+                    : "text-white bg-blue-600 hover:bg-blue-700"
+                }`}
+              >
+                {inProgress ? (
+                  <>
+                    <CheckCircle2 size={16} />
+                    <span>学完</span>
+                  </>
+                ) : (
+                  <>
+                    <BookOpen size={16} />
+                    <span>开始学习</span>
+                  </>
+                )}
+              </button>
+            ) : (
+              <div className="inline-flex items-center gap-1 px-4 py-1.5 text-sm font-medium text-green-700 bg-green-50 border border-green-200 rounded-lg">
+                <CheckCircle2 size={16} />
+                <span>已完成</span>
+              </div>
+            )}
             
             <button
               onClick={handleNext}

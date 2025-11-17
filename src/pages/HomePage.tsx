@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { problems, getCategoryStats, getMethodStats, categoryNames, methodNames } from "@/data/problems";
 import { Difficulty, Category, SolutionMethod } from "@/types";
-import { Circle, Filter, LayoutGrid, Lightbulb } from "lucide-react";
+import { Circle, Filter, LayoutGrid, Lightbulb, CheckCircle2, Heart } from "lucide-react";
 import { useState } from "react";
+import { useAppStore } from "@/store/useAppStore";
 
 function HomePage() {
   // 分类模式：'category' 或 'method'
@@ -10,6 +11,10 @@ function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState<Category | "all">("all");
   const [selectedMethod, setSelectedMethod] = useState<SolutionMethod | "all">("all");
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | "all">("all");
+  
+  // 使用 Zustand store
+  const { isCompleted, isFavorite, isInProgress, getProgressStats } = useAppStore();
+  const progressStats = getProgressStats(problems.length);
   
   // 获取统计
   const categoryStats = getCategoryStats();
@@ -61,22 +66,35 @@ function HomePage() {
       </div>
 
       {/* 统计卡片 */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div className="text-3xl font-bold text-primary-600 mb-2">
-            {problems.length}
+            {progressStats.total}
           </div>
           <div className="text-gray-600">题目总数</div>
         </div>
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="text-3xl font-bold text-green-600 mb-2">0</div>
+          <div className="text-3xl font-bold text-green-600 mb-2">
+            {progressStats.completed}
+          </div>
           <div className="text-gray-600">已完成</div>
+          {progressStats.total > 0 && (
+            <div className="text-xs text-gray-500 mt-1">
+              {progressStats.completionRate}%
+            </div>
+          )}
         </div>
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div className="text-3xl font-bold text-yellow-600 mb-2">
-            {problems.length}
+            {progressStats.inProgress}
           </div>
           <div className="text-gray-600">进行中</div>
+        </div>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="text-3xl font-bold text-red-600 mb-2">
+            {progressStats.favorite}
+          </div>
+          <div className="text-gray-600">已收藏</div>
         </div>
       </div>
 
@@ -263,7 +281,13 @@ function HomePage() {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4 flex-1">
-                  <Circle className="text-gray-300" size={20} />
+                  {isCompleted(problem.id) ? (
+                    <CheckCircle2 className="text-green-600" size={20} fill="currentColor" />
+                  ) : isInProgress(problem.id) ? (
+                    <Circle className="text-yellow-600" size={20} fill="currentColor" />
+                  ) : (
+                    <Circle className="text-gray-300" size={20} />
+                  )}
                   <div className="flex items-center gap-3">
                     <span className="text-gray-500 font-mono text-sm">
                       #{problem.leetcodeNumber}
@@ -271,6 +295,9 @@ function HomePage() {
                     <h3 className="text-lg font-medium text-gray-900">
                       {problem.title}
                     </h3>
+                    {isFavorite(problem.id) && (
+                      <Heart className="text-red-500" size={16} fill="currentColor" />
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
