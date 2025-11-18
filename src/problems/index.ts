@@ -25,8 +25,18 @@ export const visualizerRegistry: Record<number, ComponentType> = {
   8: lazy(() => import('./BestTimeToBuyStock/BestTimeToBuyStockVisualizer')),
   9: lazy(() => import('./LongestCommonPrefix/LongestCommonPrefixVisualizer')),
   10: lazy(() => import('./MaxSubArray/MaxSubArrayVisualizer')),
+  11: lazy(() => import('./PalindromeNumber/PalindromeNumberVisualizer')),
+  12: lazy(() => import('./MergeTwoLists/MergeTwoListsVisualizer')),
+  13: lazy(() => import('./RemoveDuplicates/RemoveDuplicatesVisualizer')),
+  14: lazy(() => import('./SearchInsert/SearchInsertVisualizer')),
+  15: lazy(() => import('./PlusOne/PlusOneVisualizer')),
+  16: lazy(() => import('./TwoSumII/TwoSumIIVisualizer')),
+  17: lazy(() => import('./PascalTriangle/PascalTriangleVisualizer')),
+  18: lazy(() => import('./BestTimeToBuyStockII/BestTimeToBuyStockIIVisualizer')),
+  19: lazy(() => import('./MajorityElement/MajorityElementVisualizer')),
+  20: lazy(() => import('./ReverseString/ReverseStringVisualizer')),
   // 添加新题目时，在这里注册：
-  // 11: lazy(() => import('./NextProblem/NextProblemVisualizer')),
+  // 21: lazy(() => import('./NextProblem/NextProblemVisualizer')),
 };
 
 /**

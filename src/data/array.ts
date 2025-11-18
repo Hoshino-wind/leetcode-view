@@ -605,4 +605,278 @@ export const arrayProblems: Problem[] = [
       ],
     },
   },
+  {
+    id: 13,
+    leetcodeNumber: 26,
+    title: "删除排序数组中的重复项",
+    difficulty: Difficulty.EASY,
+    category: [Category.ARRAY],
+    methods: [SolutionMethod.TWO_POINTERS],
+    description: `给你一个升序排列的数组 nums ，请你原地删除重复出现的元素，使每个元素只出现一次，返回删除后数组的新长度。元素的相对顺序应该保持一致。
+
+由于在某些语言中不能改变数组的长度，所以必须将结果放在数组nums的第一部分。更规范地说，如果在删除重复项之后有 k 个元素，那么 nums 的前 k 个元素应该保存最终结果。`,
+    examples: [
+      {
+        input: "nums = [1,1,2]",
+        output: "2, nums = [1,2,_]",
+        explanation: "函数应该返回新的长度 2，并且原数组 nums 的前两个元素被修改为 1, 2。",
+      },
+      {
+        input: "nums = [0,0,1,1,1,2,2,3,3,4]",
+        output: "5, nums = [0,1,2,3,4,_,_,_,_,_]",
+      },
+    ],
+    constraints: [
+      "1 <= nums.length <= 3 * 10⁴",
+      "-100 <= nums[i] <= 100",
+      "nums 已按升序排列",
+    ],
+    hints: [
+      "使用双指针，一个指针遍历数组，一个指针指向不重复元素的位置",
+      "因为数组已排序，重复元素一定相邻",
+    ],
+    solution: {
+      methodName: "双指针（快慢指针）",
+      methodDescription:
+        "使用快慢指针，慢指针指向不重复元素应该存放的位置，快指针遍历数组。当发现新元素时，将其复制到慢指针位置。",
+      code: `function removeDuplicates(nums: number[]): number {
+  if (nums.length === 0) return 0;
+  
+  let k = 1;
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] !== nums[k - 1]) {
+      nums[k] = nums[i];
+      k++;
+    }
+  }
+  
+  return k;
+}`,
+      language: "typescript",
+      keyLines: [5, 6, 7],
+      steps: [
+        "初始化慢指针 k = 1（第一个元素必然不重复）",
+        "遍历数组（从索引1开始）",
+        "  • 如果当前元素与前一个不重复元素不同",
+        "  • 将当前元素复制到位置 k",
+        "  • k++",
+        "返回 k（不重复元素的个数）",
+      ],
+      advantages: [
+        "原地修改：O(1) 额外空间",
+        "简单高效：一次遍历",
+        "最优解法：时空复杂度都最优",
+      ],
+      timeComplexity: {
+        value: "O(n)",
+        description: "只需遍历数组一次",
+      },
+      spaceComplexity: {
+        value: "O(1)",
+        description: "只使用了常数个变量",
+      },
+      comparisons: [
+        {
+          name: "双指针",
+          description: "快慢指针原地删除重复项",
+          timeComplexity: "O(n)",
+          spaceComplexity: "O(1)",
+          isRecommended: true,
+          pros: ["最优解法", "原地修改"],
+          cons: ["无"],
+        },
+      ],
+    },
+  },
+  {
+    id: 14,
+    leetcodeNumber: 35,
+    title: "搜索插入位置",
+    difficulty: Difficulty.EASY,
+    category: [Category.ARRAY],
+    methods: [SolutionMethod.BINARY_SEARCH],
+    description: `给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+
+请必须使用时间复杂度为 O(log n) 的算法。`,
+    examples: [
+      {
+        input: "nums = [1,3,5,6], target = 5",
+        output: "2",
+      },
+      {
+        input: "nums = [1,3,5,6], target = 2",
+        output: "1",
+      },
+      {
+        input: "nums = [1,3,5,6], target = 7",
+        output: "4",
+      },
+    ],
+    constraints: [
+      "1 <= nums.length <= 10⁴",
+      "-10⁴ <= nums[i] <= 10⁴",
+      "nums 为无重复元素的升序排列数组",
+      "-10⁴ <= target <= 10⁴",
+    ],
+    hints: [
+      "题目要求 O(log n) 时间复杂度，应该使用二分查找",
+      "如果没找到目标值，left指针就是插入位置",
+    ],
+    solution: {
+      methodName: "二分查找",
+      methodDescription:
+        "标准的二分查找算法。如果找到目标值返回索引，如果没找到，left 指针就是目标值应该插入的位置。",
+      code: `function searchInsert(nums: number[], target: number): number {
+  let left = 0;
+  let right = nums.length - 1;
+  
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    
+    if (nums[mid] === target) {
+      return mid;
+    } else if (nums[mid] < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+  
+  return left;
+}`,
+      language: "typescript",
+      keyLines: [6, 9, 11, 13, 17],
+      steps: [
+        "初始化左右指针：left = 0, right = nums.length - 1",
+        "当 left <= right 时循环：",
+        "  • 计算中点 mid",
+        "  • 如果 nums[mid] === target，返回 mid",
+        "  • 如果 nums[mid] < target，在右半部分查找（left = mid + 1）",
+        "  • 如果 nums[mid] > target，在左半部分查找（right = mid - 1）",
+        "如果未找到，返回 left（插入位置）",
+      ],
+      advantages: [
+        "时间最优：O(log n) 对数时间",
+        "空间最优：O(1) 常数空间",
+        "经典算法：二分查找标准应用",
+      ],
+      timeComplexity: {
+        value: "O(log n)",
+        description: "每次将搜索范围减半",
+      },
+      spaceComplexity: {
+        value: "O(1)",
+        description: "只使用了常数个变量",
+      },
+      comparisons: [
+        {
+          name: "线性查找",
+          description: "从头到尾遍历数组",
+          timeComplexity: "O(n)",
+          spaceComplexity: "O(1)",
+          isRecommended: false,
+          pros: ["实现简单"],
+          cons: ["不满足题目O(log n)要求"],
+        },
+        {
+          name: "二分查找",
+          description: "利用有序性质，每次折半搜索",
+          timeComplexity: "O(log n)",
+          spaceComplexity: "O(1)",
+          isRecommended: true,
+          pros: ["满足题目要求", "最优解法"],
+          cons: ["需要数组有序"],
+        },
+      ],
+    },
+  },
+  {
+    id: 15,
+    leetcodeNumber: 66,
+    title: "加一",
+    difficulty: Difficulty.EASY,
+    category: [Category.ARRAY, Category.MATH],
+    methods: [SolutionMethod.ITERATION],
+    description: `给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。
+
+最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。
+
+你可以假设除了整数 0 之外，这个整数不会以零开头。`,
+    examples: [
+      {
+        input: "digits = [1,2,3]",
+        output: "[1,2,4]",
+        explanation: "输入数组表示数字 123。",
+      },
+      {
+        input: "digits = [4,3,2,1]",
+        output: "[4,3,2,2]",
+        explanation: "输入数组表示数字 4321。",
+      },
+      {
+        input: "digits = [9]",
+        output: "[1,0]",
+        explanation: "输入数组表示数字 9。",
+      },
+    ],
+    constraints: [
+      "1 <= digits.length <= 100",
+      "0 <= digits[i] <= 9",
+    ],
+    hints: [
+      "从数组末尾开始处理，模拟加法进位",
+      "注意处理连续进位的情况（如999+1）",
+      "如果最后还有进位，需要在数组开头插入1",
+    ],
+    solution: {
+      methodName: "模拟加法（从后向前）",
+      methodDescription:
+        "从数组末尾开始，模拟加法进位过程。如果当前位是9则变为0并继续进位，否则加1后直接返回。如果所有位都是9，最后需要在开头插入1。",
+      code: `function plusOne(digits: number[]): number[] {
+  for (let i = digits.length - 1; i >= 0; i--) {
+    if (digits[i] < 9) {
+      digits[i]++;
+      return digits;
+    }
+    digits[i] = 0;
+  }
+  
+  // 所有位都是9的情况
+  return [1, ...digits];
+}`,
+      language: "typescript",
+      keyLines: [2, 3, 4, 6, 10],
+      steps: [
+        "从数组末尾开始遍历",
+        "  • 如果当前位 < 9，加1后直接返回",
+        "  • 如果当前位 = 9，变为0并继续进位",
+        "如果循环结束还没返回，说明所有位都是9",
+        "在数组开头插入1并返回",
+      ],
+      advantages: [
+        "简洁高效：一次遍历",
+        "提前返回：不是9时立即结束",
+        "处理溢出：优雅处理999+1的情况",
+      ],
+      timeComplexity: {
+        value: "O(n)",
+        description: "最坏情况需要遍历所有位",
+      },
+      spaceComplexity: {
+        value: "O(1)",
+        description: "原地修改，除返回值外不需要额外空间",
+      },
+      comparisons: [
+        {
+          name: "模拟加法",
+          description: "从后向前模拟进位",
+          timeComplexity: "O(n)",
+          spaceComplexity: "O(1)",
+          isRecommended: true,
+          pros: ["最优解法", "代码简洁"],
+          cons: ["无"],
+        },
+      ],
+    },
+  },
 ];

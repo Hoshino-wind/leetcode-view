@@ -101,4 +101,104 @@ export const linkedListProblems: Problem[] = [
       ],
     },
   },
+  {
+    id: 12,
+    leetcodeNumber: 21,
+    title: "合并两个有序链表",
+    difficulty: Difficulty.EASY,
+    category: [Category.LINKED_LIST],
+    methods: [SolutionMethod.TWO_POINTERS, SolutionMethod.ITERATION],
+    description: `将两个升序链表合并为一个新的升序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。`,
+    examples: [
+      {
+        input: "list1 = [1,2,4], list2 = [1,3,4]",
+        output: "[1,1,2,3,4,4]",
+      },
+      {
+        input: "list1 = [], list2 = []",
+        output: "[]",
+      },
+      {
+        input: "list1 = [], list2 = [0]",
+        output: "[0]",
+      },
+    ],
+    constraints: [
+      "两个链表的节点数目范围是 [0, 50]",
+      "-100 <= Node.val <= 100",
+      "list1 和 list2 均按非递减顺序排列",
+    ],
+    hints: [
+      "使用双指针分别指向两个链表",
+      "每次选择较小的节点加入结果链表",
+      "注意处理链表为空的情况",
+    ],
+    solution: {
+      methodName: "迭代法（双指针）",
+      methodDescription:
+        "使用双指针分别遍历两个链表，每次选择较小的节点加入结果链表，直到某个链表遍历完，然后将剩余节点直接连接。",
+      code: `function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode | null {
+  const dummy = new ListNode();
+  let current = dummy;
+  
+  while (list1 !== null && list2 !== null) {
+    if (list1.val <= list2.val) {
+      current.next = list1;
+      list1 = list1.next;
+    } else {
+      current.next = list2;
+      list2 = list2.next;
+    }
+    current = current.next;
+  }
+  
+  current.next = list1 !== null ? list1 : list2;
+  return dummy.next;
+}`,
+      language: "typescript",
+      keyLines: [6, 7, 10, 15],
+      steps: [
+        "创建哑节点 dummy，简化边界处理",
+        "当两个链表都不为空时循环：",
+        "  • 比较两个链表当前节点的值",
+        "  • 将较小的节点加入结果链表",
+        "  • 移动对应链表的指针",
+        "将剩余的非空链表直接连接到结果链表",
+        "返回 dummy.next（跳过哑节点）",
+      ],
+      advantages: [
+        "简单直观：逻辑清晰易懂",
+        "时间最优：O(n+m) 一次遍历",
+        "空间优化：O(1) 只使用指针",
+      ],
+      timeComplexity: {
+        value: "O(n + m)",
+        description: "需要遍历两个链表的所有节点",
+      },
+      spaceComplexity: {
+        value: "O(1)",
+        description: "只使用了常数个指针变量",
+      },
+      comparisons: [
+        {
+          name: "迭代法",
+          description: "使用双指针逐个比较合并",
+          timeComplexity: "O(n + m)",
+          spaceComplexity: "O(1)",
+          isRecommended: true,
+          pros: ["最优解法", "空间效率高"],
+          cons: ["需要处理边界情况"],
+        },
+        {
+          name: "递归法",
+          description: "递归比较并连接节点",
+          timeComplexity: "O(n + m)",
+          spaceComplexity: "O(n + m)",
+          isRecommended: false,
+          pros: ["代码简洁"],
+          cons: ["递归栈空间开销"],
+        },
+      ],
+    },
+  },
 ];

@@ -106,4 +106,95 @@ export const mathProblems: Problem[] = [
       ],
     },
   },
+  {
+    id: 11,
+    leetcodeNumber: 9,
+    title: "回文数",
+    difficulty: Difficulty.EASY,
+    category: [Category.MATH],
+    methods: [SolutionMethod.ITERATION],
+    description: `给你一个整数 x ，如果 x 是一个回文整数，返回 true ；否则，返回 false 。
+
+回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。`,
+    examples: [
+      {
+        input: "x = 121",
+        output: "true",
+      },
+      {
+        input: "x = -121",
+        output: "false",
+        explanation: "从左向右读为 -121 。从右向左读为 121- 。因此它不是一个回文数。",
+      },
+      {
+        input: "x = 10",
+        output: "false",
+        explanation: "从右向左读为 01 。因此它不是一个回文数。",
+      },
+    ],
+    constraints: ["-2³¹ <= x <= 2³¹ - 1"],
+    hints: [
+      "负数不是回文数",
+      "可以反转数字的一半来判断",
+      "不需要将整个数字反转",
+    ],
+    solution: {
+      methodName: "反转一半数字",
+      methodDescription:
+        "通过反转数字的后半部分，然后与前半部分比较。这样可以避免整数溢出的问题。",
+      code: `function isPalindrome(x: number): boolean {
+  if (x < 0 || (x % 10 === 0 && x !== 0)) return false;
+  
+  let reversed = 0;
+  while (x > reversed) {
+    reversed = reversed * 10 + x % 10;
+    x = Math.floor(x / 10);
+  }
+  
+  return x === reversed || x === Math.floor(reversed / 10);
+}`,
+      language: "typescript",
+      keyLines: [2, 5, 6, 9],
+      steps: [
+        "处理特殊情况：负数和末尾为0的非零数不是回文",
+        "反转数字的后半部分",
+        "  • 取出末位数字加到反转数中",
+        "  • 去掉原数字的末位",
+        "比较前半部分和反转的后半部分是否相等",
+      ],
+      advantages: [
+        "避免溢出：只反转一半，不会超出整数范围",
+        "时间优化：只需遍历一半的位数",
+        "空间节省：O(1) 空间复杂度",
+      ],
+      timeComplexity: {
+        value: "O(log n)",
+        description: "只需遍历数字位数的一半",
+      },
+      spaceComplexity: {
+        value: "O(1)",
+        description: "只使用了常数个变量",
+      },
+      comparisons: [
+        {
+          name: "转字符串",
+          description: "将数字转为字符串，比较正反序",
+          timeComplexity: "O(n)",
+          spaceComplexity: "O(n)",
+          isRecommended: false,
+          pros: ["实现简单"],
+          cons: ["额外空间开销", "转换开销"],
+        },
+        {
+          name: "反转一半数字",
+          description: "数学方法反转后半部分数字",
+          timeComplexity: "O(log n)",
+          spaceComplexity: "O(1)",
+          isRecommended: true,
+          pros: ["最优解法", "无额外空间"],
+          cons: ["需要理解数学技巧"],
+        },
+      ],
+    },
+  },
 ];
