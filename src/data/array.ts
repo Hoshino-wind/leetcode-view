@@ -619,7 +619,8 @@ export const arrayProblems: Problem[] = [
       {
         input: "nums = [1,1,2]",
         output: "2, nums = [1,2,_]",
-        explanation: "函数应该返回新的长度 2，并且原数组 nums 的前两个元素被修改为 1, 2。",
+        explanation:
+          "函数应该返回新的长度 2，并且原数组 nums 的前两个元素被修改为 1, 2。",
       },
       {
         input: "nums = [0,0,1,1,1,2,2,3,3,4]",
@@ -819,10 +820,7 @@ export const arrayProblems: Problem[] = [
         explanation: "输入数组表示数字 9。",
       },
     ],
-    constraints: [
-      "1 <= digits.length <= 100",
-      "0 <= digits[i] <= 9",
-    ],
+    constraints: ["1 <= digits.length <= 100", "0 <= digits[i] <= 9"],
     hints: [
       "从数组末尾开始处理，模拟加法进位",
       "注意处理连续进位的情况（如999+1）",

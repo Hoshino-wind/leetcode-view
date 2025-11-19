@@ -87,7 +87,9 @@ export function generateReverseLinkedListSteps(
 
   // 遍历链表并反转
   while (currIndex !== null) {
+    // 在修改之前保存当前节点状态
     const currentNodes = JSON.parse(JSON.stringify(nodes));
+    // 在修改之前获取 nextIndex（此时 next 还是原始值）
     const nextIndex: number | null = nodes[currIndex].next;
 
     // 步骤: 保存下一个节点
@@ -109,7 +111,7 @@ export function generateReverseLinkedListSteps(
       },
     });
 
-    // 反转当前节点的指针
+    // 反转当前节点的指针（指向 prev）
     nodes[currIndex].next = prevIndex;
 
     // 步骤: 反转指针
