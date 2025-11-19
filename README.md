@@ -72,7 +72,7 @@ npm run preview
 leetcode-view/
 ├── src/
 │   ├── components/          # 通用组件
-│   ├── problems/           # 题目实现（17题）
+│   ├── problems/           # 题目实现（22题）
 │   ├── pages/              # 页面
 │   ├── data/               # 题目数据
 │   ├── hooks/              # 自定义 Hooks
@@ -84,15 +84,15 @@ leetcode-view/
 
 ## 🎯 已实现的题目
 
-### 📊 统计（17/100）
+### 📊 统计（22/100）
 
-- **简单**: 14 题
-- **中等**: 3 题
+- **简单**: 17 题
+- **中等**: 5 题
 - **困难**: 0 题
 
 ### 📋 题型对应表
 
-#### 📦 数组类 (Array) - 10 题
+#### 📦 数组类 (Array) - 11 题
 
 | LeetCode                                  | 题目名称               | 难度    | 标签               | 状态 |
 | ----------------------------------------- | ---------------------- | ------- | ------------------ | ---- |
@@ -103,7 +103,8 @@ leetcode-view/
 | [66](src/problems/PlusOne)                | 加一                   | 🟢 简单 | 数组、数学         | ✅   |
 | [88](src/problems/MergeSortedArray)       | 合并两个有序数组       | 🟢 简单 | 数组、双指针       | ✅   |
 | [121](src/problems/BestTimeToBuyStock)    | 买卖股票的最佳时机     | 🟢 简单 | 数组、动态规划     | ✅   |
-| [122](src/problems/BestTimeToBuyStockII)  | 买卖股票的最佳时机 II  | 🟢 简单 | 数组、贪心         | ✅   |
+| [122](src/problems/BestTimeToBuyStockII)  | 买卖股票的最佳时机 II  | 🟡 中等 | 数组、贪心         | ✅   |
+| [167](src/problems/TwoSumII)              | 两数之和 II            | 🟡 中等 | 数组、双指针       | ✅   |
 | [283](src/problems/MoveZeroes)            | 移动零                 | 🟢 简单 | 数组、双指针       | ✅   |
 | [11](src/problems/ContainerWithMostWater) | 盛最多水的容器         | 🟡 中等 | 数组、双指针、贪心 | ✅   |
 
@@ -114,12 +115,13 @@ leetcode-view/
 | [21](src/problems/MergeTwoLists)      | 合并两个有序链表 | 🟢 简单 | 链表、双指针 | ✅   |
 | [206](src/problems/ReverseLinkedList) | 反转链表         | 🟢 简单 | 链表、双指针 | ✅   |
 
-#### 📝 字符串类 (String) - 2 题
+#### 📝 字符串类 (String) - 3 题
 
-| LeetCode                               | 题目名称     | 难度    | 标签       | 状态 |
-| -------------------------------------- | ------------ | ------- | ---------- | ---- |
-| [14](src/problems/LongestCommonPrefix) | 最长公共前缀 | 🟢 简单 | 字符串     | ✅   |
-| [20](src/problems/ValidParentheses)    | 有效的括号   | 🟢 简单 | 字符串、栈 | ✅   |
+| LeetCode                               | 题目名称     | 难度    | 标签           | 状态 |
+| -------------------------------------- | ------------ | ------- | -------------- | ---- |
+| [14](src/problems/LongestCommonPrefix) | 最长公共前缀 | 🟢 简单 | 字符串         | ✅   |
+| [20](src/problems/ValidParentheses)    | 有效的括号   | 🟢 简单 | 字符串、栈     | ✅   |
+| [344](src/problems/ReverseString)      | 反转字符串   | 🟢 简单 | 字符串、双指针 | ✅   |
 
 #### 🔢 数学类 (Math) - 2 题
 
@@ -127,6 +129,18 @@ leetcode-view/
 | ---------------------------------- | -------- | ------- | -------------- | ---- |
 | [9](src/problems/PalindromeNumber) | 回文数   | 🟢 简单 | 数学           | ✅   |
 | [70](src/problems/ClimbingStairs)  | 爬楼梯   | 🟢 简单 | 数学、动态规划 | ✅   |
+
+#### 🌲 树类 (Tree) - 1 题
+
+| LeetCode                                 | 题目名称         | 难度    | 标签    | 状态 |
+| ---------------------------------------- | ---------------- | ------- | ------- | ---- |
+| [104](src/problems/MaxDepthOfBinaryTree) | 二叉树的最大深度 | 🟢 简单 | 树、DFS | ✅   |
+
+#### 🕸️ 图类 (Graph) - 1 题
+
+| LeetCode                            | 题目名称 | 难度    | 标签         | 状态 |
+| ----------------------------------- | -------- | ------- | ------------ | ---- |
+| [200](src/problems/NumberOfIslands) | 岛屿数量 | 🟡 中等 | 图、DFS、BFS | ✅   |
 
 #### 📊 其他 - 2 题
 
@@ -137,11 +151,11 @@ leetcode-view/
 
 ### 🔜 即将添加
 
-- 二叉树的最大深度
 - 对称二叉树
 - 环形链表
 - 三数之和
 - 无重复字符的最长子串
+- 层序遍历
 
 ## 🛠️ 技术栈
 
