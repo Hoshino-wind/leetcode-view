@@ -1,83 +1,79 @@
-import { generateMergeSortedArraySteps } from "./algorithm";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowDown } from "lucide-react";
-import { useVisualization } from "@/hooks/useVisualization";
-import { VisualizationLayout } from "@/components/visualizers/VisualizationLayout";
-import {
-  getNumberVariable,
-  getBooleanVariable,
-  StepVariables,
-} from "@/types/visualization";
+import { ConfigurableVisualizer } from "@/components/visualizers/ConfigurableVisualizer";
+import { generateMergeSortedArraySteps } from "./algorithm";
+import { ProblemInput } from "@/types/visualization";
 
-interface MergeSortedArrayInput {
+interface MergeSortedArrayInput extends ProblemInput {
   nums1: number[];
   m: number;
   nums2: number[];
   n: number;
 }
 
+interface MergeSortedArrayData {
+  nums1: number[];
+  nums2: number[];
+  m?: number;
+  n?: number;
+}
+
 function MergeSortedArrayVisualizer() {
-  const visualization = useVisualization<MergeSortedArrayInput>(
-    (input) => generateMergeSortedArraySteps(input.nums1, input.m, input.nums2, input.n),
-    { nums1: [1, 2, 3, 0, 0, 0], m: 3, nums2: [2, 5, 6], n: 3 }
-  );
-
-  const currentNums1 = (visualization.currentStepData?.data as { nums1: number[]; nums2: number[] })?.nums1 || visualization.input.nums1;
-  const currentNums2 = (visualization.currentStepData?.data as { nums1: number[]; nums2: number[] })?.nums2 || visualization.input.nums2;
-  
-  const variables = visualization.currentStepData?.variables;
-  const p1 = getNumberVariable(variables, 'p1');
-  const p2 = getNumberVariable(variables, 'p2');
-  const p = getNumberVariable(variables, 'p');
-  const movedFrom = variables?.movedFrom as string | undefined;
-  const completed = getBooleanVariable(variables, 'completed');
-
-  // 自定义变量显示
-  const customVariables = (variables: StepVariables) => {
-    const p1 = getNumberVariable(variables, 'p1');
-    const p2 = getNumberVariable(variables, 'p2');
-    const p = getNumberVariable(variables, 'p');
-    return (
-      <div className="grid grid-cols-3 gap-3">
-        <div className="text-sm">
-          <span className="font-mono text-blue-600 font-semibold">p1</span>
-          <span className="text-gray-500"> = </span>
-          <span className="font-mono text-gray-800 font-semibold">{p1 !== undefined ? p1 : "N/A"}</span>
-        </div>
-        <div className="text-sm">
-          <span className="font-mono text-purple-600 font-semibold">p2</span>
-          <span className="text-gray-500"> = </span>
-          <span className="font-mono text-gray-800 font-semibold">{p2 !== undefined ? p2 : "N/A"}</span>
-        </div>
-        <div className="text-sm">
-          <span className="font-mono text-green-600 font-semibold">p</span>
-          <span className="text-gray-500"> = </span>
-          <span className="font-mono text-gray-800 font-semibold">{p !== undefined ? p : "N/A"}</span>
-        </div>
-      </div>
-    );
-  };
-
   return (
-    <VisualizationLayout
-      visualization={visualization}
-      inputTypes={[
-        { type: "array-and-number-m", arrayKey: "nums1", numberKey: "m", arrayLabel: "nums1", numberLabel: "m" },
-        { type: "array-and-number", arrayKey: "nums2", numberKey: "n", arrayLabel: "nums2", numberLabel: "n" },
-      ]}
-      inputFields={[
-        { type: "array", key: "nums1", label: "nums1 (包含末尾的0)", placeholder: "如: 1,2,3,0,0,0" },
-        { type: "number", key: "m", label: "m (nums1 有效元素个数)", placeholder: "如: 3" },
-        { type: "array", key: "nums2", label: "nums2", placeholder: "如: 2,5,6" },
-        { type: "number", key: "n", label: "n (nums2 元素个数)", placeholder: "如: 3" },
-      ]}
-      testCases={[
-        { label: "示例 1", value: { nums1: [1, 2, 3, 0, 0, 0], m: 3, nums2: [2, 5, 6], n: 3 } },
-        { label: "示例 2", value: { nums1: [1], m: 1, nums2: [], n: 0 } },
-        { label: "示例 3", value: { nums1: [0], m: 0, nums2: [1], n: 1 } },
-      ]}
-      customStepVariables={customVariables}
-    >
+    <ConfigurableVisualizer<MergeSortedArrayInput, MergeSortedArrayData>
+      config={{
+        defaultInput: { nums1: [1, 2, 3, 0, 0, 0], m: 3, nums2: [2, 5, 6], n: 3 },
+        algorithm: (input) => generateMergeSortedArraySteps(input.nums1, input.m, input.nums2, input.n),
+        
+        inputTypes: [
+          { type: "array-and-number-m", arrayKey: "nums1", numberKey: "m", arrayLabel: "nums1", numberLabel: "m" },
+          { type: "array-and-number", arrayKey: "nums2", numberKey: "n", arrayLabel: "nums2", numberLabel: "n" },
+        ],
+        inputFields: [
+          { type: "array", key: "nums1", label: "nums1 (包含末尾的0)", placeholder: "如: 1,2,3,0,0,0" },
+          { type: "number", key: "m", label: "m (nums1 有效元素个数)", placeholder: "如: 3" },
+          { type: "array", key: "nums2", label: "nums2", placeholder: "如: 2,5,6" },
+          { type: "number", key: "n", label: "n (nums2 元素个数)", placeholder: "如: 3" },
+        ],
+        testCases: [
+          { label: "示例 1", value: { nums1: [1, 2, 3, 0, 0, 0], m: 3, nums2: [2, 5, 6], n: 3 } },
+          { label: "示例 2", value: { nums1: [1], m: 1, nums2: [], n: 0 } },
+          { label: "示例 3", value: { nums1: [0], m: 0, nums2: [1], n: 1 } },
+        ],
+        
+        customStepVariables: (variables) => (
+          <div className="grid grid-cols-3 gap-3">
+            <div className="text-sm">
+              <span className="font-mono text-blue-600 font-semibold">p1</span>
+              <span className="text-gray-500"> = </span>
+              <span className="font-mono text-gray-800 font-semibold">{variables.p1 !== undefined ? (variables.p1 as number) : "N/A"}</span>
+            </div>
+            <div className="text-sm">
+              <span className="font-mono text-purple-600 font-semibold">p2</span>
+              <span className="text-gray-500"> = </span>
+              <span className="font-mono text-gray-800 font-semibold">{variables.p2 !== undefined ? (variables.p2 as number) : "N/A"}</span>
+            </div>
+            <div className="text-sm">
+              <span className="font-mono text-green-600 font-semibold">p</span>
+              <span className="text-gray-500"> = </span>
+              <span className="font-mono text-gray-800 font-semibold">{variables.p !== undefined ? (variables.p as number) : "N/A"}</span>
+            </div>
+          </div>
+        ),
+        
+        render: ({ data, getNumberVariable, getBooleanVariable, variables, visualization }) => {
+          const input = visualization.input as MergeSortedArrayInput;
+          const currentNums1 = data.nums1 || input.nums1;
+          const currentNums2 = data.nums2 || input.nums2;
+          const m = data.m || input.m;
+          const p1 = getNumberVariable('p1');
+          const p2 = getNumberVariable('p2');
+          const p = getNumberVariable('p');
+          const movedFrom = variables?.movedFrom as string | undefined;
+          const completed = getBooleanVariable('completed');
+          
+          return (
+            <>
 
         {/* 双数组可视化 */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -106,7 +102,7 @@ function MergeSortedArrayVisualizer() {
               {currentNums1.map((value, index) => {
                 const isP1 = p1 === index;
                 const isP = p === index;
-                const isValid = index < visualization.input.m;
+                const isValid = m !== undefined && index < m;
 
                 return (
                   <div key={index} className="flex flex-col items-center gap-2">
@@ -205,7 +201,7 @@ function MergeSortedArrayVisualizer() {
                     </div>
 
                     {/* 区域标识 */}
-                    {index === visualization.input.m - 1 && !completed && (
+                    {m !== undefined && index === m - 1 && !completed && (
                       <div className="absolute mt-[280px] text-xs text-gray-500 font-semibold">
                         ← 有效元素
                       </div>
@@ -377,7 +373,11 @@ function MergeSortedArrayVisualizer() {
             </li>
           </ul>
         </div>
-    </VisualizationLayout>
+            </>
+          );
+        },
+      }}
+    />
   );
 }
 

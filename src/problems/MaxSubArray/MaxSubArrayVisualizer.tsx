@@ -1,73 +1,67 @@
-import { generateMaxSubArraySteps } from "./algorithm";
 import { motion } from "framer-motion";
-import { useVisualization } from "@/hooks/useVisualization";
-import { VisualizationLayout } from "@/components/visualizers/VisualizationLayout";
-import {
-  getNumberVariable,
-  getBooleanVariable,
-  StepVariables,
-} from "@/types/visualization";
+import { ConfigurableVisualizer } from "@/components/visualizers/ConfigurableVisualizer";
+import { generateMaxSubArraySteps } from "./algorithm";
+import { ProblemInput } from "@/types/visualization";
 
-interface MaxSubArrayInput {
+interface MaxSubArrayInput extends ProblemInput {
   nums: number[];
 }
 
+interface MaxSubArrayData {
+  nums?: number[];
+}
+
 function MaxSubArrayVisualizer() {
-  const visualization = useVisualization<MaxSubArrayInput>(
-    (input) => generateMaxSubArraySteps(input.nums),
-    { nums: [-2, 1, -3, 4, -1, 2, 1, -5, 4] }
-  );
-
-  const variables = visualization.currentStepData?.variables;
-  const index = getNumberVariable(variables, 'index');
-  const maxSum = getNumberVariable(variables, 'maxSum');
-  const currentSum = getNumberVariable(variables, 'currentSum');
-  const subArrayStart = getNumberVariable(variables, 'subArrayStart');
-  const subArrayEnd = getNumberVariable(variables, 'subArrayEnd');
-  const finished = getBooleanVariable(variables, 'finished');
-
-  // 自定义变量显示
-  const customVariables = (variables: StepVariables) => {
-    const maxSum = getNumberVariable(variables, 'maxSum');
-    const currentSum = getNumberVariable(variables, 'currentSum');
-    return (
-      <div className="grid grid-cols-2 gap-3 text-sm">
-        {maxSum !== undefined && (
-          <div>
-            <span className="font-mono text-green-600 font-semibold">maxSum</span>
-            <span className="text-gray-500"> = </span>
-            <span className="font-mono text-gray-800 font-semibold">{maxSum}</span>
-          </div>
-        )}
-        {currentSum !== undefined && (
-          <div>
-            <span className="font-mono text-blue-600 font-semibold">currentSum</span>
-            <span className="text-gray-500"> = </span>
-            <span className="font-mono text-gray-800 font-semibold">{currentSum}</span>
-          </div>
-        )}
-      </div>
-    );
-  };
-
   return (
-    <VisualizationLayout
-      visualization={visualization}
-      inputTypes={[{ type: "array", key: "nums", label: "数组" }]}
-      inputFields={[{ type: "array", key: "nums", label: "数组 nums", placeholder: "输入数字，用逗号分隔，如: -2,1,-3,4,-1,2,1,-5,4" }]}
-      testCases={[
-        { label: "示例 1", value: { nums: [-2, 1, -3, 4, -1, 2, 1, -5, 4] } },
-        { label: "示例 2", value: { nums: [1] } },
-        { label: "示例 3", value: { nums: [5, 4, -1, 7, 8] } },
-      ]}
-      customStepVariables={customVariables}
-    >
+    <ConfigurableVisualizer<MaxSubArrayInput, MaxSubArrayData>
+      config={{
+        defaultInput: { nums: [-2, 1, -3, 4, -1, 2, 1, -5, 4] },
+        algorithm: (input) => generateMaxSubArraySteps(input.nums),
+        
+        inputTypes: [{ type: "array", key: "nums", label: "数组" }],
+        inputFields: [{ type: "array", key: "nums", label: "数组 nums", placeholder: "输入数字，用逗号分隔，如: -2,1,-3,4,-1,2,1,-5,4" }],
+        testCases: [
+          { label: "示例 1", value: { nums: [-2, 1, -3, 4, -1, 2, 1, -5, 4] } },
+          { label: "示例 2", value: { nums: [1] } },
+          { label: "示例 3", value: { nums: [5, 4, -1, 7, 8] } },
+        ],
+        
+        customStepVariables: (variables) => (
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            {variables.maxSum !== undefined && (
+              <div>
+                <span className="font-mono text-green-600 font-semibold">maxSum</span>
+                <span className="text-gray-500"> = </span>
+                <span className="font-mono text-gray-800 font-semibold">{variables.maxSum as number}</span>
+              </div>
+            )}
+            {variables.currentSum !== undefined && (
+              <div>
+                <span className="font-mono text-blue-600 font-semibold">currentSum</span>
+                <span className="text-gray-500"> = </span>
+                <span className="font-mono text-gray-800 font-semibold">{variables.currentSum as number}</span>
+              </div>
+            )}
+          </div>
+        ),
+        
+        render: ({ getNumberVariable, getBooleanVariable, visualization }) => {
+          const index = getNumberVariable('index');
+          const maxSum = getNumberVariable('maxSum');
+          const currentSum = getNumberVariable('currentSum');
+          const subArrayStart = getNumberVariable('subArrayStart');
+          const subArrayEnd = getNumberVariable('subArrayEnd');
+          const finished = getBooleanVariable('finished');
+          const input = visualization.input as MaxSubArrayInput;
+          
+          return (
+            <>
 
       {/* 数组可视化 */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h3 className="text-lg font-semibold mb-4 text-gray-800">数组可视化</h3>
           <div className="flex flex-wrap gap-2 justify-center p-4 bg-gradient-to-b from-gray-50 to-white rounded-lg">
-            {visualization.input.nums.map((num: number, idx: number) => {
+            {input.nums.map((num: number, idx: number) => {
               const isCurrentIndex = index === idx;
               const isInSubArray = subArrayStart !== undefined && subArrayEnd !== undefined && 
                                   idx >= subArrayStart && idx <= subArrayEnd;
@@ -131,7 +125,7 @@ function MaxSubArrayVisualizer() {
           <h3 className="text-lg font-semibold mb-3 text-gray-800">当前子数组</h3>
           <div className="flex items-center gap-3">
             <div className="font-mono text-lg">
-              [{visualization.input.nums.slice(subArrayStart, subArrayEnd + 1).join(', ')}]
+              [{input.nums.slice(subArrayStart, subArrayEnd + 1).join(', ')}]
             </div>
             <div className="text-sm text-gray-600">
               和 = <span className="font-bold text-blue-700">{currentSum}</span>
@@ -161,7 +155,7 @@ function MaxSubArrayVisualizer() {
               找到最大子数组！
             </div>
             <div className="text-lg mb-2">
-              子数组：[{visualization.input.nums.slice(subArrayStart!, subArrayEnd! + 1).join(', ')}]
+              子数组：[{input.nums.slice(subArrayStart!, subArrayEnd! + 1).join(', ')}]
             </div>
             <motion.div
               initial={{ scale: 0 }}
@@ -177,7 +171,12 @@ function MaxSubArrayVisualizer() {
           </div>
         </motion.div>
       )}
-    </VisualizationLayout>
+    </>
+
+          );
+        },
+      }}
+    />
   );
 }
 
